@@ -34,10 +34,15 @@ $ npm install
 Copy `.env.example` to `.env` and configure your database:
 
 ```env
+# REQUIRED - Database connection string
 MYSQL_URL=mysql://root:your_password@localhost:3306/recipe_db
+
+# OPTIONAL - Application settings
 PORT=3000
 RAILWAY_ENVIRONMENT=development
 ```
+
+**⚠️ Important**: `MYSQL_URL` is required. The application will fail to start with a clear error message if this environment variable is not provided.
 
 ## Database Setup
 

@@ -41,18 +41,33 @@ git push origin main
 
 ## Environment Variables
 
+### Required Variables
+- **`MYSQL_URL`** - Database connection string (auto-provided by Railway MySQL service)
+
+### Optional Variables  
+- **`PORT`** - Application port (default: 3000, auto-detected by Railway)
+- **`RAILWAY_ENVIRONMENT`** - Environment identifier (default: 'development')
+
+**⚠️ Validation**: The application uses strict environment validation. Missing required variables will cause startup failure with descriptive error messages.
+
 ### Local Development
 ```env
+# REQUIRED
 MYSQL_URL=mysql://root:password@localhost:3306/recipe_db
+
+# OPTIONAL
 PORT=3000
 RAILWAY_ENVIRONMENT=development
 ```
 
 ### Production (Railway)
 ```env
-MYSQL_URL=mysql://user:pass@host:port/db  # Auto-provided
-RAILWAY_ENVIRONMENT=production             # Set manually
-PORT=3000                                  # Auto-detected
+# REQUIRED - Auto-provided by Railway MySQL service
+MYSQL_URL=mysql://user:pass@host:port/db
+
+# OPTIONAL - Set manually or use defaults
+RAILWAY_ENVIRONMENT=production
+PORT=3000
 ```
 
 ## Verification
