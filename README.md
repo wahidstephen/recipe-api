@@ -23,28 +23,64 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A production-ready Recipe API built with NestJS, TypeORM, and MySQL. Features comprehensive CRUD operations, input validation, error handling, and extensive test coverage.
 
-## Project setup
+## Features
+
+- ✅ **CRUD Operations**: Create, read, update, delete recipes
+- ✅ **Data Validation**: Class-validator with comprehensive input validation
+- ✅ **Database Integration**: TypeORM with MySQL support
+- ✅ **Error Handling**: Centralized error messages and proper HTTP status codes
+- ✅ **Testing**: Unit tests (18) and E2E tests (11) with 100% coverage
+- ✅ **Health Checks**: Built-in health monitoring endpoint
+- ✅ **Production Ready**: Railway deployment configuration included
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/recipes` | List all recipes |
+| `GET` | `/recipes/:id` | Get recipe by ID |
+| `POST` | `/recipes` | Create new recipe |
+| `PATCH` | `/recipes/:id` | Update recipe |
+| `DELETE` | `/recipes/:id` | Delete recipe |
+| `GET` | `/recipes/admin/test` | Health check |
+
+## Project Setup
 
 ```bash
 $ npm install
 ```
 
-## Compile and run the project
+## Environment Configuration
+
+Copy `.env.example` to `.env` and configure your database:
+
+```env
+MYSQL_URL=mysql://root:your_password@localhost:3306/recipe_db
+PORT=3000
+NODE_ENV=development
+RAILWAY_ENVIRONMENT=development
+```
+
+## Database Setup
+
+Run the SQL commands from `create.sql` to set up your database schema and seed data.
+
+## Development
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
+# development mode
 $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+
+# build for production
+$ npm run build
 ```
 
-## Run tests
+## Testing
 
 ```bash
 # unit tests
@@ -59,16 +95,7 @@ $ npm run test:cov
 
 ## Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+This application is configured for Railway deployment via GitHub. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
 
 ## Resources
 
