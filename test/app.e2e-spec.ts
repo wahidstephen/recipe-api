@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+
+interface ErrorResponse {
+  message: string;
+  required?: string;
+}
 
 interface RecipeResponse {
   message: string;
@@ -45,7 +49,6 @@ describe('Recipe API E2E Tests', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true }));
     app.enableCors();
     await app.init();
   });
@@ -66,7 +69,15 @@ describe('Recipe API E2E Tests', () => {
       return request(app.getHttpServer())
         .post('/recipes')
         .send(recipe)
-        .expect(400);
+        .expect(200)
+        .expect((res) => {
+          const body = res.body as ErrorResponse;
+          expect(body.message).toBe('Recipe creation failed!');
+          expect(body.required).toContain('title');
+          expect(body.required).toContain('making_time');
+          expect(body.required).toContain('serves');
+          expect(body.required).toContain('ingredients');
+        });
     });
 
     it('should create a recipe', () => {
@@ -80,7 +91,7 @@ describe('Recipe API E2E Tests', () => {
       return request(app.getHttpServer())
         .post('/recipes')
         .send(recipe)
-        .expect(201)
+        .expect(200)
         .expect((res) => {
           const body = res.body as RecipeResponse;
           expect(body.message).toBe('Recipe successfully created!');
@@ -107,7 +118,7 @@ describe('Recipe API E2E Tests', () => {
 
   describe('GET /recipes/:id', () => {
     it('should get a recipe by ID', () => {
-      const targetId = 1;
+      const targetId = 2;
       return request(app.getHttpServer())
         .get(`/recipes/${targetId}`)
         .expect(200)
@@ -132,7 +143,7 @@ describe('Recipe API E2E Tests', () => {
         cost: 600,
       };
       return request(app.getHttpServer())
-        .patch('/recipes/1')
+        .patch('/recipes/2')
         .send(recipe)
         .expect(200)
         .expect((res) => {
@@ -155,7 +166,7 @@ describe('Recipe API E2E Tests', () => {
   describe('DELETE /recipes/:id', () => {
     it('should delete a recipe', () => {
       return request(app.getHttpServer())
-        .delete('/recipes/1')
+        .delete('/recipes/10')
         .expect(200)
         .expect((res) => {
           const body = res.body as TestResponse;

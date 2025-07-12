@@ -9,8 +9,9 @@ import {
   ParseIntPipe,
   ValidationPipe,
   UsePipes,
-  HttpException,
   HttpStatus,
+  HttpCode,
+  UseFilters,
 } from '@nestjs/common';
 import { RecipesService } from './recipes.service';
 import {
@@ -18,13 +19,10 @@ import {
   UpdateRecipeDto,
   RecipesResponseDto,
   RecipeResponseDto,
-  ErrorResponseDto,
   MessageResponseDto,
 } from './models';
-import {
-  RECIPE_ERROR_MESSAGES,
-  RECIPE_SUCCESS_MESSAGES,
-} from './constants/recipe.constants';
+import { RECIPE_SUCCESS_MESSAGES } from './constants/recipe.constants';
+import { RecipeValidationPipe, ValidationExceptionFilter } from '../common';
 
 @Controller('recipes')
 export class RecipesController {
@@ -36,29 +34,17 @@ export class RecipesController {
    * @returns Created recipe response
    */
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @HttpCode(HttpStatus.OK)
+  @UseFilters(ValidationExceptionFilter)
+  @UsePipes(RecipeValidationPipe)
   async createRecipe(
     @Body() createRecipeDto: CreateRecipeDto,
   ): Promise<RecipeResponseDto> {
-    try {
-      const recipe = await this.recipesService.createRecipe(createRecipeDto);
-      return {
-        message: RECIPE_SUCCESS_MESSAGES.CREATED,
-        recipe: [recipe],
-      };
-    } catch (error) {
-      // Only catch unexpected errors, let validation errors bubble up
-      if (error instanceof Error && error.message.includes('validation')) {
-        throw error;
-      }
-      throw new HttpException(
-        {
-          message: RECIPE_ERROR_MESSAGES.CREATION_FAILED,
-          required: RECIPE_ERROR_MESSAGES.VALIDATION_REQUIRED,
-        } as ErrorResponseDto,
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    const recipe = await this.recipesService.createRecipe(createRecipeDto);
+    return {
+      message: RECIPE_SUCCESS_MESSAGES.CREATED,
+      recipe: [recipe],
+    };
   }
 
   /**
