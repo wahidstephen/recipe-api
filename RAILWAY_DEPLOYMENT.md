@@ -119,13 +119,8 @@ The application uses Railway's environment variable names consistently for both 
 
 ### Local Development
 ```env
-# Database Configuration (Railway-compatible names)
-MYSQL_URL=mysql://root:password@localhost:3306/recipe_db
-MYSQLHOST=localhost
-MYSQLPORT=3306
-MYSQLUSER=root
-MYSQLPASSWORD=your_password
-MYSQLDATABASE=recipe_db
+# Database Configuration (Railway-compatible)
+MYSQL_URL=mysql://root:your_password@localhost:3306/recipe_db
 
 # Application Configuration
 PORT=3000
@@ -137,11 +132,6 @@ RAILWAY_ENVIRONMENT=development
 ```env
 # Database (automatically set by Railway MySQL service)
 MYSQL_URL=mysql://username:password@host:port/database
-MYSQLHOST=railway_mysql_host
-MYSQLPORT=3306
-MYSQLUSER=railway_user
-MYSQLPASSWORD=railway_password
-MYSQLDATABASE=railway_database
 
 # Application (set manually)
 NODE_ENV=production
