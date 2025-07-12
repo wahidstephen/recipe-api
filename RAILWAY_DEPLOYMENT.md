@@ -115,17 +115,22 @@ After deployment, you need to run the database schema creation:
 
 ## Environment Variables Reference
 
-The application supports both local and Railway environment variables:
+The application uses Railway's environment variable names consistently for both local and production environments:
 
 ### Local Development
 ```env
-DB_HOST=localhost
-DB_PORT=3306
-DB_USERNAME=root
-DB_PASSWORD=your_password
-DB_NAME=recipe_db
+# Database Configuration (Railway-compatible names)
+MYSQL_URL=mysql://root:password@localhost:3306/recipe_db
+MYSQLHOST=localhost
+MYSQLPORT=3306
+MYSQLUSER=root
+MYSQLPASSWORD=your_password
+MYSQLDATABASE=recipe_db
+
+# Application Configuration
 PORT=3000
 NODE_ENV=development
+RAILWAY_ENVIRONMENT=development
 ```
 
 ### Railway Production (Auto-populated)
