@@ -166,7 +166,7 @@ describe('Recipe API E2E Tests', () => {
   describe('DELETE /recipes/:id', () => {
     it('should delete a recipe', () => {
       return request(app.getHttpServer())
-        .delete('/recipes/10')
+        .delete('/recipes/12')
         .expect(200)
         .expect((res) => {
           const body = res.body as TestResponse;

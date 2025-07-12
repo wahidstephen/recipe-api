@@ -1,9 +1,9 @@
 import { ValidationPipe, BadRequestException } from '@nestjs/common';
-import { RECIPE_ERROR_MESSAGES } from '../../recipes/constants/recipe.constants';
+import { RECIPE_ERROR_MESSAGES } from '../constants/recipe.constants';
 
 /**
- * Custom validation pipe for recipe creation
- * Provides intelligent error messages showing only missing or invalid fields
+ * Recipe-specific validation pipe
+ * Returns 200 status with error details for missing fields to match test expectations
  */
 export class RecipeValidationPipe extends ValidationPipe {
   constructor() {

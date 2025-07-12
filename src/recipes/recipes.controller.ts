@@ -22,7 +22,8 @@ import {
   MessageResponseDto,
 } from './models';
 import { RECIPE_SUCCESS_MESSAGES } from './constants/recipe.constants';
-import { RecipeValidationPipe, ValidationExceptionFilter } from '../common';
+import { RecipeValidationPipe } from './pipes/recipe-validation.pipe';
+import { RecipeValidationExceptionFilter } from './filters/recipe-validation-exception.filter';
 
 @Controller('recipes')
 export class RecipesController {
@@ -35,7 +36,7 @@ export class RecipesController {
    */
   @Post()
   @HttpCode(HttpStatus.OK)
-  @UseFilters(ValidationExceptionFilter)
+  @UseFilters(RecipeValidationExceptionFilter)
   @UsePipes(RecipeValidationPipe)
   async createRecipe(
     @Body() createRecipeDto: CreateRecipeDto,
