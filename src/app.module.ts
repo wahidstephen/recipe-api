@@ -12,13 +12,19 @@ import { Recipe } from './recipes/models/recipe.entity';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '3306'),
-      username: process.env.DB_USERNAME || 'root',
-      password: process.env.DB_PASSWORD || 'password',
-      database: process.env.DB_NAME || 'recipe_db',
+      url: process.env.DATABASE_URL || process.env.MYSQL_URL,
+      host: process.env.MYSQLHOST || process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.MYSQLPORT || process.env.DB_PORT || '3306'),
+      username: process.env.MYSQLUSER || process.env.DB_USERNAME || 'root',
+      password:
+        process.env.MYSQLPASSWORD || process.env.DB_PASSWORD || 'password',
+      database: process.env.MYSQLDATABASE || process.env.DB_NAME || 'recipe_db',
       entities: [Recipe],
       synchronize: process.env.NODE_ENV !== 'production',
+      ssl:
+        process.env.RAILWAY_ENVIRONMENT === 'production'
+          ? { rejectUnauthorized: false }
+          : false,
     }),
     RecipesModule,
   ],
