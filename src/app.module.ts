@@ -16,9 +16,7 @@ import { Recipe } from './recipes/models/recipe.entity';
         process.env.MYSQL_URL ||
         'mysql://root:password@localhost:3306/recipe_db',
       entities: [Recipe],
-      synchronize:
-        process.env.NODE_ENV !== 'production' ||
-        process.env.RAILWAY_ENVIRONMENT === 'production',
+      synchronize: true,
       ssl:
         process.env.RAILWAY_ENVIRONMENT === 'production'
           ? { rejectUnauthorized: false }
