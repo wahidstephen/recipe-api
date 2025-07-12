@@ -13,6 +13,13 @@ import {
   HttpCode,
   UseFilters,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
 import { RecipesService } from './recipes.service';
 import {
   CreateRecipeDto,
@@ -20,11 +27,13 @@ import {
   RecipesResponseDto,
   RecipeResponseDto,
   MessageResponseDto,
+  ErrorResponseDto,
 } from './models';
 import { RECIPE_SUCCESS_MESSAGES } from './constants/recipe.constants';
 import { RecipeValidationPipe } from './pipes/recipe-validation.pipe';
 import { RecipeValidationExceptionFilter } from './filters/recipe-validation-exception.filter';
 
+@ApiTags('recipes')
 @Controller('recipes')
 export class RecipesController {
   constructor(private readonly recipesService: RecipesService) {}
@@ -38,6 +47,18 @@ export class RecipesController {
   @HttpCode(HttpStatus.OK)
   @UseFilters(RecipeValidationExceptionFilter)
   @UsePipes(RecipeValidationPipe)
+  @ApiOperation({ summary: 'Create a new recipe' })
+  @ApiBody({ type: CreateRecipeDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Recipe created successfully',
+    type: RecipeResponseDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Recipe creation failed due to validation errors',
+    type: ErrorResponseDto,
+  })
   async createRecipe(
     @Body() createRecipeDto: CreateRecipeDto,
   ): Promise<RecipeResponseDto> {
@@ -53,6 +74,12 @@ export class RecipesController {
    * @returns All recipes response
    */
   @Get()
+  @ApiOperation({ summary: 'Get all recipes' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of all recipes',
+    type: RecipesResponseDto,
+  })
   async getAllRecipes(): Promise<RecipesResponseDto> {
     const recipes = await this.recipesService.getAllRecipes();
     return { recipes };
@@ -64,6 +91,22 @@ export class RecipesController {
    * @returns Recipe response
    */
   @Get(':id')
+  @ApiOperation({ summary: 'Get a recipe by ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'Recipe ID',
+    type: Number,
+    example: 1,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Recipe found',
+    type: RecipeResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Recipe not found',
+  })
   async getRecipeById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<RecipeResponseDto> {
@@ -84,6 +127,23 @@ export class RecipesController {
   @UsePipes(
     new ValidationPipe({ transform: true, skipMissingProperties: true }),
   )
+  @ApiOperation({ summary: 'Update a recipe by ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'Recipe ID',
+    type: Number,
+    example: 1,
+  })
+  @ApiBody({ type: UpdateRecipeDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Recipe updated successfully',
+    type: RecipeResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Recipe not found',
+  })
   async updateRecipe(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateRecipeDto: UpdateRecipeDto,
@@ -101,6 +161,22 @@ export class RecipesController {
    * @returns Delete success message
    */
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a recipe by ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'Recipe ID',
+    type: Number,
+    example: 1,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Recipe deleted successfully',
+    type: MessageResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Recipe not found',
+  })
   async deleteRecipe(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<MessageResponseDto> {
@@ -115,6 +191,20 @@ export class RecipesController {
    * @returns Test response
    */
   @Get('admin/test')
+  @ApiOperation({ summary: 'Admin test endpoint for smoke testing' })
+  @ApiResponse({
+    status: 200,
+    description: 'API is working',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'The API is working!',
+        },
+      },
+    },
+  })
   testRecipes(): { message: string } {
     return { message: RECIPE_SUCCESS_MESSAGES.API_WORKING };
   }
