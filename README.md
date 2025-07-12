@@ -36,7 +36,6 @@ Copy `.env.example` to `.env` and configure your database:
 ```env
 MYSQL_URL=mysql://root:your_password@localhost:3306/recipe_db
 PORT=3000
-NODE_ENV=development
 RAILWAY_ENVIRONMENT=development
 ```
 

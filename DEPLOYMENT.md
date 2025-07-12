@@ -24,7 +24,6 @@ Deploy your Recipe API to Railway with MySQL database via GitHub.
 
 In your Railway service → "Variables" tab, add:
 ```
-NODE_ENV=production
 RAILWAY_ENVIRONMENT=production
 ```
 
@@ -46,14 +45,12 @@ git push origin main
 ```env
 MYSQL_URL=mysql://root:password@localhost:3306/recipe_db
 PORT=3000
-NODE_ENV=development
 RAILWAY_ENVIRONMENT=development
 ```
 
 ### Production (Railway)
 ```env
 MYSQL_URL=mysql://user:pass@host:port/db  # Auto-provided
-NODE_ENV=production                        # Set manually
 RAILWAY_ENVIRONMENT=production             # Set manually
 PORT=3000                                  # Auto-detected
 ```
